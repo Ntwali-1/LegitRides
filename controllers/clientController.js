@@ -37,7 +37,7 @@ const clientSignup = async (req,res)=>{
       email,
       'Verify your  Rwanda Rides account',
       `
-        Welcome to  Rwanda Rides 🎉\n
+        Welcome to  Rwanda Rides \n
         Your One-Time Password (OTP) is: ${otp}\n
         It will expire in 10 minutes.\n
         If you didn't request this, please ignore this message.
@@ -126,6 +126,42 @@ const clientProfile = async (req,res)=>{
   }
 }
 
+const getClientProfile = async (req,res)=>{
+  try {
+    const profile = await ClientProfile.findOne({email:req.client.email})
+    if(!profile){
+      return res.json({message:"Profile not found..."})
+    }
+    return res.json({data:profile})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
+const updateClientProfile = async (req,res)=>{
+  try {
+    const profile = await ClientProfile.findOneAndUpdate({email:req.client.email},req.body,{new:true})
+    if(!profile){
+      return res.json({message:"Profile not found..."})
+    }
+    return res.json({data:profile})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
+const deleteClientProfile = async (req,res)=>{
+  try {
+    const profile = await ClientProfile.findOneAndDelete({email:req.client.email})
+    if(!profile){
+      return res.json({message:"Profile not found..."})
+    }
+    return res.json({message:"Profile deleted successfully..."})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
 const tripRequest = async(req,res)=>{
   try {
     const {province,district,pickupLocation,destinationLocation,tripType,tripTime,paymentMethod,exchangeable} = req.body;
@@ -154,5 +190,8 @@ module.exports = {
   clientVerify,
   clientLogin,
   clientProfile,
+  getClientProfile,
+  updateClientProfile,
+  deleteClientProfile,
   tripRequest
 }

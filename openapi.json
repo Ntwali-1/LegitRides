@@ -39,9 +39,27 @@
     "/api/client-profile": {
       "post": {
         "tags": ["Client"],
-        "summary": "Get or update client profile",
+        "summary": "Create client profile",
         "security": [{ "bearerAuth": [] }],
         "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      },
+      "get": {
+        "tags": ["Client"],
+        "summary": "Get client profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      },
+      "put": {
+        "tags": ["Client"],
+        "summary": "Update client profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      },
+      "delete": {
+        "tags": ["Client"],
+        "summary": "Delete client profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
       }
     },
     "/api/trip-request": {

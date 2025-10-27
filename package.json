@@ -19,6 +19,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^8.15.0",
     "morgan": "^1.10.0",
-    "nodemailer": "^7.0.3"
+    "nodemailer": "^7.0.3",
+    "swagger-ui-express": "^5.0.1"
   }
 }
