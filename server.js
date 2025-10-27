@@ -1,3 +1,4 @@
+
 const express = require('express');
 const _ = require('lodash');
 const cors = require('cors');
@@ -9,11 +10,19 @@ require('dotenv').config();
 const clientRoutes = require('./routes/clientRoutes')
 const appealRoutes = require('./routes/appealRoutes')
 const ticketExchangeRoutes = require('./routes/ticketExchangeRoutes')
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./openapi.json');
 
 const app = express();
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(cors());
+
+app.get('/openapi.json', (req, res) => {
+  res.json(swaggerDocument);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(clientRoutes)
 app.use(appealRoutes)

@@ -1,0 +1,161 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "LegitRides API",
+    "version": "1.0.0",
+    "description": "API documentation for LegitRides. This is an initial minimal spec inferred from current routes."
+  },
+  "servers": [
+    { "url": "http://localhost:3010", "description": "Local" }
+  ],
+  "tags": [
+    { "name": "Client" },
+    { "name": "Appeals" },
+    { "name": "Exchanges" },
+    { "name": "Admin" }
+  ],
+  "paths": {
+    "/api/client-signup": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Client signup",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/client-verify": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Verify client account",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/client-login": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Client login",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/client-profile": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Get or update client profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/trip-request": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Create a trip request",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/appeals": {
+      "post": {
+        "tags": ["Appeals"],
+        "summary": "Create an appeal",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Created" }, "401": { "description": "Unauthorized" } }
+      },
+      "get": {
+        "tags": ["Appeals"],
+        "summary": "List my appeals",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/appeals/{id}": {
+      "get": {
+        "tags": ["Appeals"],
+        "summary": "Get appeal by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/admin/appeals": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "List all appeals (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "403": { "description": "Forbidden" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/admin/appeals/{id}/respond": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Respond to an appeal (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "403": { "description": "Forbidden" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/exchanges": {
+      "post": {
+        "tags": ["Exchanges"],
+        "summary": "Create a ticket exchange listing",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Created" }, "401": { "description": "Unauthorized" } }
+      },
+      "get": {
+        "tags": ["Exchanges"],
+        "summary": "Browse exchange listings",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/exchanges/{id}/request": {
+      "post": {
+        "tags": ["Exchanges"],
+        "summary": "Request an exchange",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/exchange-requests/{id}/respond": {
+      "put": {
+        "tags": ["Exchanges"],
+        "summary": "Respond to an exchange request",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/my-exchanges": {
+      "get": {
+        "tags": ["Exchanges"],
+        "summary": "Get my exchanges",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/pending-exchange-requests": {
+      "get": {
+        "tags": ["Exchanges"],
+        "summary": "Get pending exchange requests",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
