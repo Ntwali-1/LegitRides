@@ -70,6 +70,59 @@
         "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
       }
     },
+    "/api/trips": {
+      "get": {
+        "tags": ["Client"],
+        "summary": "List my trips",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["pending","confirmed","completed","cancelled","exchanged"] } }
+        ],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/trips/{id}": {
+      "get": {
+        "tags": ["Client"],
+        "summary": "Get a trip by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      },
+      "put": {
+        "tags": ["Client"],
+        "summary": "Update a pending trip",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "400": { "description": "Bad Request" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/trips/{id}/cancel": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Cancel a trip",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "400": { "description": "Bad Request" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/api/trips/{id}/complete": {
+      "post": {
+        "tags": ["Client"],
+        "summary": "Complete a trip",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" }, "401": { "description": "Unauthorized" } }
+      }
+    },
     "/api/appeals": {
       "post": {
         "tags": ["Appeals"],

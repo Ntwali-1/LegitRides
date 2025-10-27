@@ -185,6 +185,91 @@ const tripRequest = async(req,res)=>{
   }
 }
 
+const listTrips = async (req,res)=>{
+  try {
+    const filter = { client: req.client.id }
+    if(req.query.status){
+      filter.status = req.query.status
+    }
+    const trips = await TripRequest.find(filter).sort({ _id: -1 })
+    return res.json({data:trips})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
+const getTripById = async (req,res)=>{
+  try {
+    const trip = await TripRequest.findOne({ _id: req.params.id, client: req.client.id })
+    if(!trip){
+      return res.status(404).json({message:'Trip not found'})
+    }
+    return res.json({data:trip})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
+const updateTrip = async (req,res)=>{
+  try {
+    const trip = await TripRequest.findOne({ _id: req.params.id, client: req.client.id })
+    if(!trip){
+      return res.status(404).json({message:'Trip not found'})
+    }
+    if(trip.status !== 'pending'){
+      return res.status(400).json({message:'Only pending trips can be updated'})
+    }
+    const fields = ['province','district','pickupLocation','destinationLocation','tripType','tripTime','paymentMethod','exchangeable']
+    fields.forEach(f=>{
+      if(typeof req.body[f] !== 'undefined'){
+        trip[f] = req.body[f]
+      }
+    })
+    await trip.save()
+    return res.json({data:trip})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
+const cancelTrip = async (req,res)=>{
+  try {
+    const trip = await TripRequest.findOne({ _id: req.params.id, client: req.client.id })
+    if(!trip){
+      return res.status(404).json({message:'Trip not found'})
+    }
+    if(trip.status === 'completed'){
+      return res.status(400).json({message:'Completed trip cannot be cancelled'})
+    }
+    if(trip.status === 'cancelled'){
+      return res.json({data:trip})
+    }
+    trip.status = 'cancelled'
+    await trip.save()
+    return res.json({data:trip})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
+const completeTrip = async (req,res)=>{
+  try {
+    const trip = await TripRequest.findOne({ _id: req.params.id, client: req.client.id })
+    if(!trip){
+      return res.status(404).json({message:'Trip not found'})
+    }
+    if(trip.status === 'completed'){
+      return res.json({data:trip})
+    }
+    trip.status = 'completed'
+    trip.completedAt = new Date()
+    await trip.save()
+    return res.json({data:trip})
+  } catch (error) {
+    return res.json({message:error.message})
+  }
+}
+
 module.exports = {
   clientSignup,
   clientVerify,
@@ -193,5 +278,10 @@ module.exports = {
   getClientProfile,
   updateClientProfile,
   deleteClientProfile,
-  tripRequest
+  tripRequest,
+  listTrips,
+  getTripById,
+  updateTrip,
+  cancelTrip,
+  completeTrip
 }
